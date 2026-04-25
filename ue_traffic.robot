@@ -12,48 +12,49 @@ ${INVALID_BEARER_ID}   10
 ${PROTOCOL}            tcp
 
 *** Test Cases ***
-TC-009: Allow transfer only in DL
+TC-3-001 Allow transfer only in DL
     Attach UE with ID ${VALID_UE_ID}
     Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}
     Set traffic for UE ${VALID_UE_ID} bearer ${VALID_BEARER_ID} with valid data
-    Status Should Be    200    ${LAST_RESPONSE}
 
-TC-010: Fail when transfer speed is invalid
+TC-3-002 Fail when transfer speed is invalid
     Attach UE with ID ${VALID_UE_ID}
     Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}
     Set traffic with invalid speed for UE ${VALID_UE_ID} bearer ${VALID_BEARER_ID} should fail
 
-TC-011: Fail when UE ID is invalid
+TC-3-003 Fail when UE ID is invalid
+    Attach UE with ID ${VALID_UE_ID}
+    Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}
     Set traffic for UE ${INVALID_UE_ID} bearer ${VALID_BEARER_ID} should fail
 
-TC-012: Fail when bearer ID is inactive
+TC-3-004 Fail when bearer ID is inactive
     Attach UE with ID ${VALID_UE_ID}
     Set traffic for UE ${VALID_UE_ID} bearer ${VALID_BEARER_ID} should fail
 
-TC-013: Succeed with valid data
+TC-3-005 Succeed with valid data
     Attach UE with ID ${VALID_UE_ID}
     Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}
     Set traffic for UE ${VALID_UE_ID} bearer ${VALID_BEARER_ID} with valid data
 
-TC-014: Fail when UE ID is not provided
+TC-3-006 Fail when UE ID is not provided
     Attempt to set traffic without UE ID should fail
 
-TC-015: Fail when bearer ID is not provided
+TC-3-007 Fail when bearer ID is not provided
     Attach UE with ID ${VALID_UE_ID}
     Attempt to set traffic without bearer ID should fail
 
-TC-016: Fail when transfer speed is not provided
+TC-3-008 Fail when transfer speed is not provided
     Attach UE with ID ${VALID_UE_ID}
     Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}
     Attempt to set traffic without speed should fail
 
-TC-017: Retrieve status for a specific bearer
+TC-4-001 Retrieve status for a specific bearer
     Attach UE with ID ${VALID_UE_ID}
     Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}
     Set traffic for UE ${VALID_UE_ID} bearer ${VALID_BEARER_ID} with valid data
     Get traffic for UE ${VALID_UE_ID} bearer ${VALID_BEARER_ID}
 
-TC-018: Retrieve status for all bearers
+TC-4-002 Retrieve status for all bearers
     Attach UE with ID ${VALID_UE_ID}
     Add bearer to UE ${VALID_UE_ID} with ID 1
     Add bearer to UE ${VALID_UE_ID} with ID 2
@@ -61,21 +62,53 @@ TC-018: Retrieve status for all bearers
     Set traffic for UE ${VALID_UE_ID} bearer 2 with valid data
     Get all traffic for UE ${VALID_UE_ID}
 
-TC-019: Default unit is kbps
+TC-4-003 Default unit is kbps
     Attach UE with ID ${VALID_UE_ID}
     Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}
     Set traffic for UE ${VALID_UE_ID} bearer ${VALID_BEARER_ID} with kbps 1000
     Verify target bps for UE ${VALID_UE_ID} bearer ${VALID_BEARER_ID} is 1000000
 
-TC-020: Fail when bearer ID is invalid
+TC-4-004 Fail when bearer ID is invalid
     Attach UE with ID ${VALID_UE_ID}
     Get traffic for UE ${VALID_UE_ID} bearer ${INVALID_BEARER_ID} should fail
 
-TC-021: Fail when UE ID is invalid
+TC-4-005 Fail when UE ID is invalid
+    Attach UE with ID ${VALID_UE_ID}
+    Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}
     Get traffic for UE ${INVALID_UE_ID} bearer ${VALID_BEARER_ID} should fail
 
-TC-022: Fail when UE ID is not provided
+TC-4-006 Fail when UE ID is not provided
+    Attach UE with ID ${VALID_UE_ID}
+    Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}
     Attempt to get traffic without UE ID should fail
+
+TC-5-001 Finish transfer for a specific bearer
+    Attach UE with ID ${VALID_UE_ID}
+    Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}
+    Set traffic for UE ${VALID_UE_ID} bearer ${VALID_BEARER_ID} with valid data
+    Stop traffic for UE ${VALID_UE_ID} bearer ${VALID_BEARER_ID}
+
+TC-5-002 Finish transfer for all bearers
+    Attach UE with ID ${VALID_UE_ID}
+    Add bearer to UE ${VALID_UE_ID} with ID 1
+    Add bearer to UE ${VALID_UE_ID} with ID 2
+    Set traffic for UE ${VALID_UE_ID} bearer 1 with valid data
+    Set traffic for UE ${VALID_UE_ID} bearer 2 with valid data
+    Stop all traffic for UE ${VALID_UE_ID}
+
+TC-5-003 Fail when bearer ID is invalid
+    Attach UE with ID ${VALID_UE_ID}
+    Stop traffic for UE ${VALID_UE_ID} bearer ${INVALID_BEARER_ID} should fail
+
+TC-5-004 Fail when UE ID is invalid
+    Attach UE with ID ${VALID_UE_ID}
+    Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}
+    Stop traffic for UE ${INVALID_UE_ID} bearer ${VALID_BEARER_ID} should fail
+
+TC-5-005 Fail when UE ID is not provided
+    Attach UE with ID ${VALID_UE_ID}
+    Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}
+    Attempt to stop traffic without UE ID should fail
 
 *** Keywords ***
 Attach UE with ID ${ue_id}
@@ -189,3 +222,41 @@ Verify target bps for UE ${ue_id} bearer ${bearer_id} is ${expected_bps}
     Status Should Be    200    ${response}
     ${json}=    Set Variable    ${response.json()}
     Should Be Equal As Integers    ${json["target_bps"]}    ${expected_bps}
+
+Stop traffic for UE ${ue_id} bearer ${bearer_id}
+    ${response}=   DELETE On Session    ue_api    /ues/${ue_id}/bearers/${bearer_id}/traffic
+    Status Should Be    200    ${response}
+
+    ${json}=    Set Variable    ${response.json()}
+
+    Dictionary Should Contain Key    ${json}    status
+    Dictionary Should Contain Key    ${json}    ue_id
+    Dictionary Should Contain Key    ${json}    bearer_id
+
+    Should Be Equal As Integers    ${json["ue_id"]}    ${ue_id}
+    Should Be Equal As Integers    ${json["bearer_id"]}    ${bearer_id}
+
+
+Stop all traffic for UE ${ue_id}
+    ${response}=   DELETE On Session    ue_api    /ues/${ue_id}/bearers/traffic
+    Status Should Be    200    ${response}
+
+    ${json}=    Set Variable    ${response.json()}
+
+    Should Be True    isinstance(${json}, list)
+
+    FOR    ${item}    IN    @{json}
+        Dictionary Should Contain Key    ${item}    ue_id
+        Dictionary Should Contain Key    ${item}    bearer_id
+        Dictionary Should Contain Key    ${item}    status
+    END
+
+
+Stop traffic for UE ${ue_id} bearer ${bearer_id} should fail
+    ${response}=   DELETE On Session    ue_api    /ues/${ue_id}/bearers/${bearer_id}/traffic    expected_status=any
+    Should Be True    ${response.status_code} >= 400
+
+
+Attempt to stop traffic without UE ID should fail
+    ${response}=   DELETE On Session    ue_api    /ues//bearers/${VALID_BEARER_ID}/traffic    expected_status=any
+    Should Be True    ${response.status_code} >= 400
