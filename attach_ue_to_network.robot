@@ -13,7 +13,8 @@ ${MIN_INVALID_UE_ID}  ${-1}
 ${MAX_INVALID_UE_ID}  ${101}       
 ${STRING_UE_ID}       invalid_id
 ${FLOAT_UE_ID}        ${1.5}
-${DEFAULT_BEARER}     ${9}         
+${DEFAULT_BEARER}     ${9}    
+${EXAMPLE_UE_ID}      ${50}      
 
 *** Test Cases ***
 TC-1-001: Succeed when attaching UE with minimum valid ID
@@ -52,8 +53,8 @@ TC-1-007: Fail when UE ID is not provided
 
 TC-1-008: Fail when UE is already connected
     [Documentation]    Verify bad request error when trying to attach an already attached UE.
-    Attach UE To Network    ${MIN_VALID_UE_ID}
-    Attempt To Attach Already Connected UE    ${MIN_VALID_UE_ID}
+    Attach UE To Network    ${EXAMPLE_UE_ID}
+    Attempt To Attach Already Connected UE    ${EXAMPLE_UE_ID}
 
 TC-1-009: Succeed to attach multiple different UEs sequentially
     [Documentation]    Verify that multiple UEs can exist in the network simultaneously.
