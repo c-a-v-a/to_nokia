@@ -12,49 +12,49 @@ ${INVALID_BEARER_ID}   10
 ${PROTOCOL}            tcp
 
 *** Test Cases ***
-TC-3-001 Allow transfer only in DL
+TC-3-001 Start transfer only in DL
     Attach UE with ID ${VALID_UE_ID}
     Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}
     Set traffic for UE ${VALID_UE_ID} bearer ${VALID_BEARER_ID} with valid data
 
-TC-3-002 Fail when transfer speed is invalid
+TC-3-002 Fail to start transfer when speed is invalid
     Attach UE with ID ${VALID_UE_ID}
     Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}
     Set traffic with invalid speed for UE ${VALID_UE_ID} bearer ${VALID_BEARER_ID} should fail
 
-TC-3-003 Fail when UE ID is invalid
+TC-3-003 Fail to start transfer when UE ID is invalid
     Attach UE with ID ${VALID_UE_ID}
     Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}
     Set traffic for UE ${INVALID_UE_ID} bearer ${VALID_BEARER_ID} should fail
 
-TC-3-004 Fail when bearer ID is inactive
+TC-3-004 Fail to start transfer when bearer ID is inactive
     Attach UE with ID ${VALID_UE_ID}
     Set traffic for UE ${VALID_UE_ID} bearer ${VALID_BEARER_ID} should fail
 
-TC-3-005 Succeed with valid data
+TC-3-005 Successfully start transfer with valid data
     Attach UE with ID ${VALID_UE_ID}
     Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}
     Set traffic for UE ${VALID_UE_ID} bearer ${VALID_BEARER_ID} with valid data
 
-TC-3-006 Fail when UE ID is not provided
+TC-3-006 Fail to start transfer when UE ID is not provided
     Attempt to set traffic without UE ID should fail
 
-TC-3-007 Fail when bearer ID is not provided
+TC-3-007 Fail to start transfer when bearer ID is not provided
     Attach UE with ID ${VALID_UE_ID}
     Attempt to set traffic without bearer ID should fail
 
-TC-3-008 Fail when transfer speed is not provided
+TC-3-008 Fail to start transfer when speed is not provided
     Attach UE with ID ${VALID_UE_ID}
     Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}
     Attempt to set traffic without speed should fail
 
-TC-4-001 Retrieve status for a specific bearer
+TC-4-001 Retrieve transfer status for a specific bearer
     Attach UE with ID ${VALID_UE_ID}
     Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}
     Set traffic for UE ${VALID_UE_ID} bearer ${VALID_BEARER_ID} with valid data
     Get traffic for UE ${VALID_UE_ID} bearer ${VALID_BEARER_ID}
 
-TC-4-002 Retrieve status for all bearers
+TC-4-002 Retrieve transfer status for all bearers
     Attach UE with ID ${VALID_UE_ID}
     Add bearer to UE ${VALID_UE_ID} with ID 1
     Add bearer to UE ${VALID_UE_ID} with ID 2
@@ -62,33 +62,35 @@ TC-4-002 Retrieve status for all bearers
     Set traffic for UE ${VALID_UE_ID} bearer 2 with valid data
     Get all traffic for UE ${VALID_UE_ID}
 
-TC-4-003 Default unit is kbps
+TC-4-003 Transfer status default unit is kbps
     Attach UE with ID ${VALID_UE_ID}
     Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}
     Set traffic for UE ${VALID_UE_ID} bearer ${VALID_BEARER_ID} with kbps 1000
     Verify target bps for UE ${VALID_UE_ID} bearer ${VALID_BEARER_ID} is 1000000
 
-TC-4-004 Fail when bearer ID is invalid
+TC-4-004 Fail to retrieve transfer status when bearer ID is invalid
     Attach UE with ID ${VALID_UE_ID}
+    Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}
+    Set traffic for UE ${VALID_UE_ID} bearer ${VALID_BEARER_ID} with valid data
     Get traffic for UE ${VALID_UE_ID} bearer ${INVALID_BEARER_ID} should fail
 
-TC-4-005 Fail when UE ID is invalid
+TC-4-005 Fail to retrieve transfer status when UE ID is invalid
     Attach UE with ID ${VALID_UE_ID}
     Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}
     Get traffic for UE ${INVALID_UE_ID} bearer ${VALID_BEARER_ID} should fail
 
-TC-4-006 Fail when UE ID is not provided
+TC-4-006 Fail to retrieve transfer status when UE ID is not provided
     Attach UE with ID ${VALID_UE_ID}
     Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}
     Attempt to get traffic without UE ID should fail
 
-TC-5-001 Finish transfer for a specific bearer
+TC-5-001 Stop transfer for a specific bearer
     Attach UE with ID ${VALID_UE_ID}
     Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}
     Set traffic for UE ${VALID_UE_ID} bearer ${VALID_BEARER_ID} with valid data
     Stop traffic for UE ${VALID_UE_ID} bearer ${VALID_BEARER_ID}
 
-TC-5-002 Finish transfer for all bearers
+TC-5-002 Stop transfer for all bearers
     Attach UE with ID ${VALID_UE_ID}
     Add bearer to UE ${VALID_UE_ID} with ID 1
     Add bearer to UE ${VALID_UE_ID} with ID 2
@@ -96,16 +98,16 @@ TC-5-002 Finish transfer for all bearers
     Set traffic for UE ${VALID_UE_ID} bearer 2 with valid data
     Stop all traffic for UE ${VALID_UE_ID}
 
-TC-5-003 Fail when bearer ID is invalid
+TC-5-003 Fail to stop transfer when bearer ID is invalid
     Attach UE with ID ${VALID_UE_ID}
     Stop traffic for UE ${VALID_UE_ID} bearer ${INVALID_BEARER_ID} should fail
 
-TC-5-004 Fail when UE ID is invalid
+TC-5-004 Fail to stop transfer when UE ID is invalid
     Attach UE with ID ${VALID_UE_ID}
     Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}
     Stop traffic for UE ${INVALID_UE_ID} bearer ${VALID_BEARER_ID} should fail
 
-TC-5-005 Fail when UE ID is not provided
+TC-5-005 Fail to stop transfer when UE ID is not provided
     Attach UE with ID ${VALID_UE_ID}
     Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}
     Attempt to stop traffic without UE ID should fail
@@ -114,18 +116,21 @@ TC-5-005 Fail when UE ID is not provided
 Attach UE with ID ${ue_id}
     ${headers}=    Prepare Json Headers
     &{body}=       Create Dictionary    ue_id=${ue_id}
+    Log    REQUEST: METHOD=POST URL=/ues BODY=${body}
     ${response}=   POST On Session    ue_api    /ues    json=${body}    headers=${headers}
     Status Should Be    200    ${response}
 
 Add bearer to UE ${ue_id} with ID ${bearer_id}
     ${headers}=    Prepare Json Headers
     &{body}=       Create Dictionary    bearer_id=${bearer_id}
+    Log    REQUEST: METHOD=POST URL=/ues/${ue_id}/bearers BODY=${body}
     ${response}=   POST On Session    ue_api    /ues/${ue_id}/bearers    json=${body}    headers=${headers}
     Status Should Be    200    ${response}
 
 Set traffic for UE ${ue_id} bearer ${bearer_id} with valid data
     ${headers}=    Prepare Json Headers
     &{body}=       Create Dictionary    protocol=${PROTOCOL}    Mbps=10
+    Log    REQUEST: METHOD=POST URL=/ues/${ue_id}/bearers/${bearer_id}/traffic BODY=${body}
     ${response}=   POST On Session    ue_api    /ues/${ue_id}/bearers/${bearer_id}/traffic    json=${body}    headers=${headers}
     Set Suite Variable    ${LAST_RESPONSE}    ${response}
     Status Should Be    200    ${response}
@@ -145,34 +150,40 @@ Set traffic for UE ${ue_id} bearer ${bearer_id} with valid data
 Set traffic for UE ${ue_id} bearer ${bearer_id} should fail
     ${headers}=    Prepare Json Headers
     &{body}=       Create Dictionary    protocol=${PROTOCOL}    Mbps=10
+    Log    REQUEST: METHOD=POST URL=/ues/${ue_id}/bearers/${bearer_id}/traffic BODY=${body}
     ${response}=   POST On Session    ue_api    /ues/${ue_id}/bearers/${bearer_id}/traffic    json=${body}    headers=${headers}    expected_status=any
     Should Be True    ${response.status_code} >= 400
 
 Set traffic with invalid speed for UE ${ue_id} bearer ${bearer_id} should fail
     ${headers}=    Prepare Json Headers
     &{body}=       Create Dictionary    protocol=${PROTOCOL}    Mbps=-1
+    Log    REQUEST: METHOD=POST URL=/ues/${ue_id}/bearers/${bearer_id}/traffic BODY=${body}
     ${response}=   POST On Session    ue_api    /ues/${ue_id}/bearers/${bearer_id}/traffic    json=${body}    headers=${headers}    expected_status=any
     Status Should Be    422    ${response}
 
 Attempt to set traffic without UE ID should fail
     ${headers}=    Prepare Json Headers
     &{body}=       Create Dictionary    protocol=${PROTOCOL}    Mbps=10
+    Log    REQUEST: METHOD=POST URL=/ues//bearers/${VALID_BEARER_ID}/traffic BODY=${body}
     ${response}=   POST On Session    ue_api    /ues//bearers/${VALID_BEARER_ID}/traffic    json=${body}    headers=${headers}    expected_status=any
     Should Be True    ${response.status_code} >= 400
 
 Attempt to set traffic without bearer ID should fail
     ${headers}=    Prepare Json Headers
     &{body}=       Create Dictionary    protocol=${PROTOCOL}    Mbps=10
+    Log    REQUEST: METHOD=POST URL=/ues/${VALID_UE_ID}/bearers//traffic BODY=${body}
     ${response}=   POST On Session    ue_api    /ues/${VALID_UE_ID}/bearers//traffic    json=${body}    headers=${headers}    expected_status=any
     Should Be True    ${response.status_code} >= 400
 
 Attempt to set traffic without speed should fail
     ${headers}=    Prepare Json Headers
     &{body}=       Create Dictionary    protocol=${PROTOCOL}
+    Log    REQUEST: METHOD=POST URL=/ues/${VALID_UE_ID}/bearers/${VALID_BEARER_ID}/traffic BODY=${body}
     ${response}=   POST On Session    ue_api    /ues/${VALID_UE_ID}/bearers/${VALID_BEARER_ID}/traffic    json=${body}    headers=${headers}    expected_status=any
     Status Should Be    422    ${response}
 
 Get traffic for UE ${ue_id} bearer ${bearer_id}
+    Log    REQUEST: METHOD=GET URL=/ues/${ue_id}/bearers/${bearer_id}/traffic
     ${response}=   GET On Session    ue_api    /ues/${ue_id}/bearers/${bearer_id}/traffic
     Status Should Be    200    ${response}
 
@@ -190,6 +201,7 @@ Get traffic for UE ${ue_id} bearer ${bearer_id}
     Should Be Equal As Integers    ${json["bearer_id"]}    ${bearer_id}
 
 Get all traffic for UE ${ue_id}
+    Log    REQUEST: METHOD=GET URL=/ues/${ue_id}/bearers/traffic
     ${response}=   GET On Session    ue_api    /ues/${ue_id}/bearers/traffic
     Status Should Be    200    ${response}
 
@@ -204,26 +216,31 @@ Get all traffic for UE ${ue_id}
     END
 
 Get traffic for UE ${ue_id} bearer ${bearer_id} should fail
+    Log    REQUEST: METHOD=GET URL=/ues/${ue_id}/bearers/${bearer_id}/traffic
     ${response}=   GET On Session    ue_api    /ues/${ue_id}/bearers/${bearer_id}/traffic    expected_status=any
     Should Be True    ${response.status_code} >= 400
 
 Attempt to get traffic without UE ID should fail
+    Log    REQUEST: METHOD=GET URL=/ues//bearers/${VALID_BEARER_ID}/traffic
     ${response}=   GET On Session    ue_api    /ues//bearers/${VALID_BEARER_ID}/traffic    expected_status=any
     Should Be True    ${response.status_code} >= 400
 
 Set traffic for UE ${ue_id} bearer ${bearer_id} with kbps ${kbps}
     ${headers}=    Prepare Json Headers
     &{body}=       Create Dictionary    protocol=${PROTOCOL}    kbps=${kbps}
+    Log    REQUEST: METHOD=POST URL=/ues/${ue_id}/bearers/${bearer_id}/traffic BODY=${body}
     ${response}=   POST On Session    ue_api    /ues/${ue_id}/bearers/${bearer_id}/traffic    json=${body}    headers=${headers}
     Status Should Be    200    ${response}
 
 Verify target bps for UE ${ue_id} bearer ${bearer_id} is ${expected_bps}
+    Log    REQUEST: METHOD=GET URL=/ues/${ue_id}/bearers/${bearer_id}/traffic
     ${response}=   GET On Session    ue_api    /ues/${ue_id}/bearers/${bearer_id}/traffic
     Status Should Be    200    ${response}
     ${json}=    Set Variable    ${response.json()}
     Should Be Equal As Integers    ${json["target_bps"]}    ${expected_bps}
 
 Stop traffic for UE ${ue_id} bearer ${bearer_id}
+    Log    REQUEST: METHOD=DELETE URL=/ues/${ue_id}/bearers/${bearer_id}/traffic
     ${response}=   DELETE On Session    ue_api    /ues/${ue_id}/bearers/${bearer_id}/traffic
     Status Should Be    200    ${response}
 
@@ -238,6 +255,7 @@ Stop traffic for UE ${ue_id} bearer ${bearer_id}
 
 
 Stop all traffic for UE ${ue_id}
+    Log    REQUEST: METHOD=DELETE URL=/ues/${ue_id}/bearers/traffic
     ${response}=   DELETE On Session    ue_api    /ues/${ue_id}/bearers/traffic
     Status Should Be    200    ${response}
 
@@ -253,10 +271,12 @@ Stop all traffic for UE ${ue_id}
 
 
 Stop traffic for UE ${ue_id} bearer ${bearer_id} should fail
+    Log    REQUEST: METHOD=DELETE URL=/ues/${ue_id}/bearers/${bearer_id}/traffic
     ${response}=   DELETE On Session    ue_api    /ues/${ue_id}/bearers/${bearer_id}/traffic    expected_status=any
     Should Be True    ${response.status_code} >= 400
 
 
 Attempt to stop traffic without UE ID should fail
+    Log    REQUEST: METHOD=DELETE URL=/ues//bearers/${VALID_BEARER_ID}/traffic
     ${response}=   DELETE On Session    ue_api    /ues//bearers/${VALID_BEARER_ID}/traffic    expected_status=any
     Should Be True    ${response.status_code} >= 400
