@@ -7,9 +7,9 @@ Test Setup        Reset EPC Simulator
 
 *** Variables ***
 ${BASE_URL}           http://localhost:8000
-${MIN_VALID_UE_ID}    ${1}         
+${MIN_VALID_UE_ID}    ${0}         
 ${MAX_VALID_UE_ID}    ${100}       
-${MIN_INVALID_UE_ID}  ${0}         
+${MIN_INVALID_UE_ID}  ${-1}         
 ${MAX_INVALID_UE_ID}  ${101}       
 ${STRING_UE_ID}       invalid_id
 ${FLOAT_UE_ID}        ${1.5}
@@ -17,7 +17,7 @@ ${DEFAULT_BEARER}     ${9}
 
 *** Test Cases ***
 TC-1-001: Succeed when attaching UE with minimum valid ID
-    [Documentation]    Verify successful attachment for the lowest allowed UE ID (1).
+    [Documentation]    Verify successful attachment for the lowest allowed UE ID (0).
     Attach UE To Network    ${MIN_VALID_UE_ID}
     Verify If UE Is Attached    ${MIN_VALID_UE_ID}
     Verify If UE Has Default Bearer    ${MIN_VALID_UE_ID}    ${DEFAULT_BEARER}
@@ -29,7 +29,7 @@ TC-1-002: Succeed when attaching UE with maximum valid ID
     Verify If UE Has Default Bearer    ${MAX_VALID_UE_ID}    ${DEFAULT_BEARER}
 
 TC-1-003: Fail when attaching UE with ID just below minimum
-    [Documentation]    Verify validation error when UE ID is 0.
+    [Documentation]    Verify validation error when UE ID is -1.
     Attempt To Attach UE With Invalid Data    ${MIN_INVALID_UE_ID}
     Verify If UE Is Not Attached    ${MIN_INVALID_UE_ID}
 
