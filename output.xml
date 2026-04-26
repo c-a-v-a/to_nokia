@@ -1,0 +1,817 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.4.2 (Python 3.13.1 on win32)" generated="2026-04-22T11:54:49.948726" rpa="false" schemaversion="5">
+<suite id="s1" name="Functionality 6" source="C:\Users\OEM\Desktop\STUDIA\SEM6\TESTOWANIE\to_nokia\functionality_6.robot">
+<kw name="Create API Session" owner="shared_keywords" type="SETUP">
+<kw name="Create Session" owner="RequestsLibrary">
+<msg time="2026-04-22T11:54:50.356471" level="INFO">Creating Session using : alias=ue_api, url=http://127.0.0.1:8000, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<arg>ue_api</arg>
+<arg>${BASE_URL}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="PASS" start="2026-04-22T11:54:50.356023" elapsed="0.000874"/>
+</kw>
+<doc>Create HTTP session for API calls</doc>
+<status status="PASS" start="2026-04-22T11:54:50.355126" elapsed="0.001953"/>
+</kw>
+<test id="s1-t1" name="TC-028: Fail when UE ID is invalid" line="14">
+<kw name="Reset API State" owner="shared_keywords" type="SETUP">
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-04-22T11:54:50.501718" level="INFO">POST Request : url=http://127.0.0.1:8000/reset 
+ path_url=/reset 
+ headers={'User-Agent': 'python-requests/2.33.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '0'} 
+ body=None 
+ </msg>
+<msg time="2026-04-22T11:54:50.501896" level="INFO">POST Response : url=http://127.0.0.1:8000/reset 
+ status=200, reason=OK 
+ headers={'date': 'Wed, 22 Apr 2026 09:54:50 GMT', 'server': 'uvicorn', 'content-length': '18', 'content-type': 'application/json'} 
+ body={"status":"reset"} 
+ </msg>
+<msg time="2026-04-22T11:54:50.502082" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>ue_api</arg>
+<arg>${RESET_ENDPOINT}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.358408" elapsed="0.143719"/>
+</kw>
+<doc>Reset backend state before each test</doc>
+<status status="PASS" start="2026-04-22T11:54:50.357998" elapsed="0.144254"/>
+</kw>
+<kw name="Adding bearer to UE ${INVALID_UE_ID} with ID ${VALID_BEARER_ID} should fail" source_name="Adding bearer to UE ${ue_id} with ID ${bearer_id} should fail">
+<kw name="Prepare Json Headers" owner="shared_keywords">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-04-22T11:54:50.504535" level="INFO">&amp;{headers} = { Content-Type=application/json }</msg>
+<var>&amp;{headers}</var>
+<arg>Content-Type=application/json</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.503862" elapsed="0.000720"/>
+</kw>
+<return>
+<value>${headers}</value>
+<status status="PASS" start="2026-04-22T11:54:50.504667" elapsed="0.000071"/>
+</return>
+<msg time="2026-04-22T11:54:50.504975" level="INFO">${headers} = {'Content-Type': 'application/json'}</msg>
+<var>${headers}</var>
+<doc>Prepare Json request headers</doc>
+<status status="PASS" start="2026-04-22T11:54:50.503513" elapsed="0.001504"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-04-22T11:54:50.505729" level="INFO">&amp;{body} = { bearer_id=2 }</msg>
+<var>&amp;{body}</var>
+<arg>bearer_id=${bearer_id}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.505205" elapsed="0.000565"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-04-22T11:54:50.513415" level="INFO">POST Request : url=http://127.0.0.1:8000/ues/999/bearers 
+ path_url=/ues/999/bearers 
+ headers={'User-Agent': 'python-requests/2.33.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Type': 'application/json', 'Content-Length': '18'} 
+ body=b'{"bearer_id": "2"}' 
+ </msg>
+<msg time="2026-04-22T11:54:50.513529" level="INFO">POST Response : url=http://127.0.0.1:8000/ues/999/bearers 
+ status=400, reason=Bad Request 
+ headers={'date': 'Wed, 22 Apr 2026 09:54:50 GMT', 'server': 'uvicorn', 'content-length': '25', 'content-type': 'application/json'} 
+ body={"detail":"UE not found"} 
+ </msg>
+<msg time="2026-04-22T11:54:50.513700" level="INFO">${response} = &lt;Response [400]&gt;</msg>
+<var>${response}</var>
+<arg>ue_api</arg>
+<arg>/ues/${ue_id}/bearers</arg>
+<arg>json=${body}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.505948" elapsed="0.007794"/>
+</kw>
+<kw name="Should Be True" owner="BuiltIn">
+<arg>${response.status_code} &gt;= 400</arg>
+<doc>Fails if the given condition is not true.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.514013" elapsed="0.001521"/>
+</kw>
+<doc>Attempts to add a bearer and expects the request to be rejected.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.502943" elapsed="0.012689"/>
+</kw>
+<status status="PASS" start="2026-04-22T11:54:50.357186" elapsed="0.158745"/>
+</test>
+<test id="s1-t2" name="TC-029: Fail when bearer ID is invalid" line="17">
+<kw name="Reset API State" owner="shared_keywords" type="SETUP">
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-04-22T11:54:50.525641" level="INFO">POST Request : url=http://127.0.0.1:8000/reset 
+ path_url=/reset 
+ headers={'User-Agent': 'python-requests/2.33.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '0'} 
+ body=None 
+ </msg>
+<msg time="2026-04-22T11:54:50.525746" level="INFO">POST Response : url=http://127.0.0.1:8000/reset 
+ status=200, reason=OK 
+ headers={'date': 'Wed, 22 Apr 2026 09:54:50 GMT', 'server': 'uvicorn', 'content-length': '18', 'content-type': 'application/json'} 
+ body={"status":"reset"} 
+ </msg>
+<msg time="2026-04-22T11:54:50.525927" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>ue_api</arg>
+<arg>${RESET_ENDPOINT}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.517613" elapsed="0.008357"/>
+</kw>
+<doc>Reset backend state before each test</doc>
+<status status="PASS" start="2026-04-22T11:54:50.517192" elapsed="0.008896"/>
+</kw>
+<kw name="Attach UE with ID ${VALID_UE_ID}" source_name="Attach UE with ID ${ue_id}">
+<kw name="Prepare Json Headers" owner="shared_keywords">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-04-22T11:54:50.527947" level="INFO">&amp;{headers} = { Content-Type=application/json }</msg>
+<var>&amp;{headers}</var>
+<arg>Content-Type=application/json</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.527447" elapsed="0.000545"/>
+</kw>
+<return>
+<value>${headers}</value>
+<status status="PASS" start="2026-04-22T11:54:50.528074" elapsed="0.000063"/>
+</return>
+<msg time="2026-04-22T11:54:50.528337" level="INFO">${headers} = {'Content-Type': 'application/json'}</msg>
+<var>${headers}</var>
+<doc>Prepare Json request headers</doc>
+<status status="PASS" start="2026-04-22T11:54:50.527090" elapsed="0.001285"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-04-22T11:54:50.529057" level="INFO">&amp;{body} = { ue_id=1 }</msg>
+<var>&amp;{body}</var>
+<arg>ue_id=${ue_id}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.528547" elapsed="0.000550"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-04-22T11:54:50.670848" level="INFO">POST Request : url=http://127.0.0.1:8000/ues 
+ path_url=/ues 
+ headers={'User-Agent': 'python-requests/2.33.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Type': 'application/json', 'Content-Length': '14'} 
+ body=b'{"ue_id": "1"}' 
+ </msg>
+<msg time="2026-04-22T11:54:50.670950" level="INFO">POST Response : url=http://127.0.0.1:8000/ues 
+ status=200, reason=OK 
+ headers={'date': 'Wed, 22 Apr 2026 09:54:50 GMT', 'server': 'uvicorn', 'content-length': '31', 'content-type': 'application/json'} 
+ body={"status":"attached","ue_id":1} 
+ </msg>
+<msg time="2026-04-22T11:54:50.671391" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>ue_api</arg>
+<arg>/ues</arg>
+<arg>json=${body}</arg>
+<arg>headers=${headers}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.529270" elapsed="0.142166"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>200</arg>
+<arg>${response}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.671689" elapsed="0.000339"/>
+</kw>
+<doc>Attaches a User Equipment (UE) to the EPC simulator.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.526597" elapsed="0.145530"/>
+</kw>
+<kw name="Adding bearer to UE ${VALID_UE_ID} with ID ${INVALID_BEARER_ID} should fail" source_name="Adding bearer to UE ${ue_id} with ID ${bearer_id} should fail">
+<kw name="Prepare Json Headers" owner="shared_keywords">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-04-22T11:54:50.674229" level="INFO">&amp;{headers} = { Content-Type=application/json }</msg>
+<var>&amp;{headers}</var>
+<arg>Content-Type=application/json</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.673734" elapsed="0.000538"/>
+</kw>
+<return>
+<value>${headers}</value>
+<status status="PASS" start="2026-04-22T11:54:50.674348" elapsed="0.000055"/>
+</return>
+<msg time="2026-04-22T11:54:50.674589" level="INFO">${headers} = {'Content-Type': 'application/json'}</msg>
+<var>${headers}</var>
+<doc>Prepare Json request headers</doc>
+<status status="PASS" start="2026-04-22T11:54:50.673397" elapsed="0.001231"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-04-22T11:54:50.675327" level="INFO">&amp;{body} = { bearer_id=10 }</msg>
+<var>&amp;{body}</var>
+<arg>bearer_id=${bearer_id}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.674800" elapsed="0.000569"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-04-22T11:54:50.681165" level="INFO">POST Request : url=http://127.0.0.1:8000/ues/1/bearers 
+ path_url=/ues/1/bearers 
+ headers={'User-Agent': 'python-requests/2.33.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Type': 'application/json', 'Content-Length': '19'} 
+ body=b'{"bearer_id": "10"}' 
+ </msg>
+<msg time="2026-04-22T11:54:50.681265" level="INFO">POST Response : url=http://127.0.0.1:8000/ues/1/bearers 
+ status=422, reason=Unprocessable Entity 
+ headers={'date': 'Wed, 22 Apr 2026 09:54:50 GMT', 'server': 'uvicorn', 'content-length': '142', 'content-type': 'application/json'} 
+ body={"detail":[{"type":"less_than_equal","loc":["body","bearer_id"],"msg":"Input should be less than or equal to 9","input":"10","ctx":{"le":9}}]} 
+ </msg>
+<msg time="2026-04-22T11:54:50.681434" level="INFO">${response} = &lt;Response [422]&gt;</msg>
+<var>${response}</var>
+<arg>ue_api</arg>
+<arg>/ues/${ue_id}/bearers</arg>
+<arg>json=${body}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.675543" elapsed="0.005935"/>
+</kw>
+<kw name="Should Be True" owner="BuiltIn">
+<arg>${response.status_code} &gt;= 400</arg>
+<doc>Fails if the given condition is not true.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.681710" elapsed="0.001371"/>
+</kw>
+<doc>Attempts to add a bearer and expects the request to be rejected.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.672725" elapsed="0.010449"/>
+</kw>
+<status status="PASS" start="2026-04-22T11:54:50.516553" elapsed="0.166983"/>
+</test>
+<test id="s1-t3" name="TC-030: Fail when bearer ID already exists" line="21">
+<kw name="Reset API State" owner="shared_keywords" type="SETUP">
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-04-22T11:54:50.746901" level="INFO">POST Request : url=http://127.0.0.1:8000/reset 
+ path_url=/reset 
+ headers={'User-Agent': 'python-requests/2.33.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '0'} 
+ body=None 
+ </msg>
+<msg time="2026-04-22T11:54:50.747022" level="INFO">POST Response : url=http://127.0.0.1:8000/reset 
+ status=200, reason=OK 
+ headers={'date': 'Wed, 22 Apr 2026 09:54:50 GMT', 'server': 'uvicorn', 'content-length': '18', 'content-type': 'application/json'} 
+ body={"status":"reset"} 
+ </msg>
+<msg time="2026-04-22T11:54:50.747201" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>ue_api</arg>
+<arg>${RESET_ENDPOINT}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.685518" elapsed="0.061725"/>
+</kw>
+<doc>Reset backend state before each test</doc>
+<status status="PASS" start="2026-04-22T11:54:50.685152" elapsed="0.062207"/>
+</kw>
+<kw name="Attach UE with ID ${VALID_UE_ID}" source_name="Attach UE with ID ${ue_id}">
+<kw name="Prepare Json Headers" owner="shared_keywords">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-04-22T11:54:50.749341" level="INFO">&amp;{headers} = { Content-Type=application/json }</msg>
+<var>&amp;{headers}</var>
+<arg>Content-Type=application/json</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.748828" elapsed="0.000555"/>
+</kw>
+<return>
+<value>${headers}</value>
+<status status="PASS" start="2026-04-22T11:54:50.749460" elapsed="0.000046"/>
+</return>
+<msg time="2026-04-22T11:54:50.749690" level="INFO">${headers} = {'Content-Type': 'application/json'}</msg>
+<var>${headers}</var>
+<doc>Prepare Json request headers</doc>
+<status status="PASS" start="2026-04-22T11:54:50.748472" elapsed="0.001284"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-04-22T11:54:50.750429" level="INFO">&amp;{body} = { ue_id=1 }</msg>
+<var>&amp;{body}</var>
+<arg>ue_id=${ue_id}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.749922" elapsed="0.000549"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-04-22T11:54:50.815192" level="INFO">POST Request : url=http://127.0.0.1:8000/ues 
+ path_url=/ues 
+ headers={'User-Agent': 'python-requests/2.33.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Type': 'application/json', 'Content-Length': '14'} 
+ body=b'{"ue_id": "1"}' 
+ </msg>
+<msg time="2026-04-22T11:54:50.815292" level="INFO">POST Response : url=http://127.0.0.1:8000/ues 
+ status=200, reason=OK 
+ headers={'date': 'Wed, 22 Apr 2026 09:54:50 GMT', 'server': 'uvicorn', 'content-length': '31', 'content-type': 'application/json'} 
+ body={"status":"attached","ue_id":1} 
+ </msg>
+<msg time="2026-04-22T11:54:50.815452" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>ue_api</arg>
+<arg>/ues</arg>
+<arg>json=${body}</arg>
+<arg>headers=${headers}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.750636" elapsed="0.064855"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>200</arg>
+<arg>${response}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.815743" elapsed="0.000266"/>
+</kw>
+<doc>Attaches a User Equipment (UE) to the EPC simulator.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.747934" elapsed="0.068171"/>
+</kw>
+<kw name="Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}" source_name="Add bearer to UE ${ue_id} with ID ${bearer_id}">
+<kw name="Prepare Json Headers" owner="shared_keywords">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-04-22T11:54:50.818234" level="INFO">&amp;{headers} = { Content-Type=application/json }</msg>
+<var>&amp;{headers}</var>
+<arg>Content-Type=application/json</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.817762" elapsed="0.000515"/>
+</kw>
+<return>
+<value>${headers}</value>
+<status status="PASS" start="2026-04-22T11:54:50.818369" elapsed="0.000056"/>
+</return>
+<msg time="2026-04-22T11:54:50.818621" level="INFO">${headers} = {'Content-Type': 'application/json'}</msg>
+<var>${headers}</var>
+<doc>Prepare Json request headers</doc>
+<status status="PASS" start="2026-04-22T11:54:50.817415" elapsed="0.001245"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-04-22T11:54:50.819319" level="INFO">&amp;{body} = { bearer_id=2 }</msg>
+<var>&amp;{body}</var>
+<arg>bearer_id=${bearer_id}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.818826" elapsed="0.000532"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-04-22T11:54:50.883387" level="INFO">POST Request : url=http://127.0.0.1:8000/ues/1/bearers 
+ path_url=/ues/1/bearers 
+ headers={'User-Agent': 'python-requests/2.33.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Type': 'application/json', 'Content-Length': '18'} 
+ body=b'{"bearer_id": "2"}' 
+ </msg>
+<msg time="2026-04-22T11:54:50.883489" level="INFO">POST Response : url=http://127.0.0.1:8000/ues/1/bearers 
+ status=200, reason=OK 
+ headers={'date': 'Wed, 22 Apr 2026 09:54:50 GMT', 'server': 'uvicorn', 'content-length': '49', 'content-type': 'application/json'} 
+ body={"status":"bearer_added","ue_id":1,"bearer_id":2} 
+ </msg>
+<msg time="2026-04-22T11:54:50.883652" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>ue_api</arg>
+<arg>/ues/${ue_id}/bearers</arg>
+<arg>json=${body}</arg>
+<arg>headers=${headers}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.819526" elapsed="0.064167"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>200</arg>
+<arg>${response}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.883945" elapsed="0.000259"/>
+</kw>
+<doc>Adds a transport channel (bearer) to a specific UE.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.816715" elapsed="0.067592"/>
+</kw>
+<kw name="Adding bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID} should fail" source_name="Adding bearer to UE ${ue_id} with ID ${bearer_id} should fail">
+<kw name="Prepare Json Headers" owner="shared_keywords">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-04-22T11:54:50.886184" level="INFO">&amp;{headers} = { Content-Type=application/json }</msg>
+<var>&amp;{headers}</var>
+<arg>Content-Type=application/json</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.885704" elapsed="0.000523"/>
+</kw>
+<return>
+<value>${headers}</value>
+<status status="PASS" start="2026-04-22T11:54:50.886301" elapsed="0.000045"/>
+</return>
+<msg time="2026-04-22T11:54:50.886538" level="INFO">${headers} = {'Content-Type': 'application/json'}</msg>
+<var>${headers}</var>
+<doc>Prepare Json request headers</doc>
+<status status="PASS" start="2026-04-22T11:54:50.885378" elapsed="0.001204"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-04-22T11:54:50.887266" level="INFO">&amp;{body} = { bearer_id=2 }</msg>
+<var>&amp;{body}</var>
+<arg>bearer_id=${bearer_id}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.886765" elapsed="0.000542"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-04-22T11:54:50.893969" level="INFO">POST Request : url=http://127.0.0.1:8000/ues/1/bearers 
+ path_url=/ues/1/bearers 
+ headers={'User-Agent': 'python-requests/2.33.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Type': 'application/json', 'Content-Length': '18'} 
+ body=b'{"bearer_id": "2"}' 
+ </msg>
+<msg time="2026-04-22T11:54:50.894069" level="INFO">POST Response : url=http://127.0.0.1:8000/ues/1/bearers 
+ status=400, reason=Bad Request 
+ headers={'date': 'Wed, 22 Apr 2026 09:54:50 GMT', 'server': 'uvicorn', 'content-length': '34', 'content-type': 'application/json'} 
+ body={"detail":"Bearer already exists"} 
+ </msg>
+<msg time="2026-04-22T11:54:50.894232" level="INFO">${response} = &lt;Response [400]&gt;</msg>
+<var>${response}</var>
+<arg>ue_api</arg>
+<arg>/ues/${ue_id}/bearers</arg>
+<arg>json=${body}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.887474" elapsed="0.006807"/>
+</kw>
+<kw name="Should Be True" owner="BuiltIn">
+<arg>${response.status_code} &gt;= 400</arg>
+<doc>Fails if the given condition is not true.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.894518" elapsed="0.001402"/>
+</kw>
+<doc>Attempts to add a bearer and expects the request to be rejected.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.884860" elapsed="0.011162"/>
+</kw>
+<status status="PASS" start="2026-04-22T11:54:50.684238" elapsed="0.212129"/>
+</test>
+<test id="s1-t4" name="TC-031: Succeed with valid data" line="26">
+<kw name="Reset API State" owner="shared_keywords" type="SETUP">
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-04-22T11:54:50.963130" level="INFO">POST Request : url=http://127.0.0.1:8000/reset 
+ path_url=/reset 
+ headers={'User-Agent': 'python-requests/2.33.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '0'} 
+ body=None 
+ </msg>
+<msg time="2026-04-22T11:54:50.963294" level="INFO">POST Response : url=http://127.0.0.1:8000/reset 
+ status=200, reason=OK 
+ headers={'date': 'Wed, 22 Apr 2026 09:54:50 GMT', 'server': 'uvicorn', 'content-length': '18', 'content-type': 'application/json'} 
+ body={"status":"reset"} 
+ </msg>
+<msg time="2026-04-22T11:54:50.963492" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>ue_api</arg>
+<arg>${RESET_ENDPOINT}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.898328" elapsed="0.065219"/>
+</kw>
+<doc>Reset backend state before each test</doc>
+<status status="PASS" start="2026-04-22T11:54:50.897868" elapsed="0.065800"/>
+</kw>
+<kw name="Attach UE with ID ${VALID_UE_ID}" source_name="Attach UE with ID ${ue_id}">
+<kw name="Prepare Json Headers" owner="shared_keywords">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-04-22T11:54:50.965627" level="INFO">&amp;{headers} = { Content-Type=application/json }</msg>
+<var>&amp;{headers}</var>
+<arg>Content-Type=application/json</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.965136" elapsed="0.000532"/>
+</kw>
+<return>
+<value>${headers}</value>
+<status status="PASS" start="2026-04-22T11:54:50.965757" elapsed="0.000045"/>
+</return>
+<msg time="2026-04-22T11:54:50.965986" level="INFO">${headers} = {'Content-Type': 'application/json'}</msg>
+<var>${headers}</var>
+<doc>Prepare Json request headers</doc>
+<status status="PASS" start="2026-04-22T11:54:50.964819" elapsed="0.001211"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-04-22T11:54:50.966691" level="INFO">&amp;{body} = { ue_id=1 }</msg>
+<var>&amp;{body}</var>
+<arg>ue_id=${ue_id}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.966202" elapsed="0.000532"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-04-22T11:54:51.031075" level="INFO">POST Request : url=http://127.0.0.1:8000/ues 
+ path_url=/ues 
+ headers={'User-Agent': 'python-requests/2.33.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Type': 'application/json', 'Content-Length': '14'} 
+ body=b'{"ue_id": "1"}' 
+ </msg>
+<msg time="2026-04-22T11:54:51.031178" level="INFO">POST Response : url=http://127.0.0.1:8000/ues 
+ status=200, reason=OK 
+ headers={'date': 'Wed, 22 Apr 2026 09:54:50 GMT', 'server': 'uvicorn', 'content-length': '31', 'content-type': 'application/json'} 
+ body={"status":"attached","ue_id":1} 
+ </msg>
+<msg time="2026-04-22T11:54:51.031384" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>ue_api</arg>
+<arg>/ues</arg>
+<arg>json=${body}</arg>
+<arg>headers=${headers}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.966994" elapsed="0.064438"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>200</arg>
+<arg>${response}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.031671" elapsed="0.000489"/>
+</kw>
+<doc>Attaches a User Equipment (UE) to the EPC simulator.</doc>
+<status status="PASS" start="2026-04-22T11:54:50.964325" elapsed="0.067982"/>
+</kw>
+<kw name="Add bearer to UE ${VALID_UE_ID} with ID ${VALID_BEARER_ID}" source_name="Add bearer to UE ${ue_id} with ID ${bearer_id}">
+<kw name="Prepare Json Headers" owner="shared_keywords">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-04-22T11:54:51.034369" level="INFO">&amp;{headers} = { Content-Type=application/json }</msg>
+<var>&amp;{headers}</var>
+<arg>Content-Type=application/json</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.033841" elapsed="0.000573"/>
+</kw>
+<return>
+<value>${headers}</value>
+<status status="PASS" start="2026-04-22T11:54:51.034495" elapsed="0.000049"/>
+</return>
+<msg time="2026-04-22T11:54:51.034729" level="INFO">${headers} = {'Content-Type': 'application/json'}</msg>
+<var>${headers}</var>
+<doc>Prepare Json request headers</doc>
+<status status="PASS" start="2026-04-22T11:54:51.033498" elapsed="0.001461"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-04-22T11:54:51.035743" level="INFO">&amp;{body} = { bearer_id=2 }</msg>
+<var>&amp;{body}</var>
+<arg>bearer_id=${bearer_id}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.035167" elapsed="0.000623"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-04-22T11:54:51.115591" level="INFO">POST Request : url=http://127.0.0.1:8000/ues/1/bearers 
+ path_url=/ues/1/bearers 
+ headers={'User-Agent': 'python-requests/2.33.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Type': 'application/json', 'Content-Length': '18'} 
+ body=b'{"bearer_id": "2"}' 
+ </msg>
+<msg time="2026-04-22T11:54:51.115694" level="INFO">POST Response : url=http://127.0.0.1:8000/ues/1/bearers 
+ status=200, reason=OK 
+ headers={'date': 'Wed, 22 Apr 2026 09:54:50 GMT', 'server': 'uvicorn', 'content-length': '49', 'content-type': 'application/json'} 
+ body={"status":"bearer_added","ue_id":1,"bearer_id":2} 
+ </msg>
+<msg time="2026-04-22T11:54:51.115860" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>ue_api</arg>
+<arg>/ues/${ue_id}/bearers</arg>
+<arg>json=${body}</arg>
+<arg>headers=${headers}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.036008" elapsed="0.079894"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>200</arg>
+<arg>${response}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.116139" elapsed="0.000269"/>
+</kw>
+<doc>Adds a transport channel (bearer) to a specific UE.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.032927" elapsed="0.083582"/>
+</kw>
+<kw name="User verifies that bearer ${VALID_BEARER_ID} is present for UE ${VALID_UE_ID}" source_name="User verifies that bearer ${bearer_id} is present for UE ${ue_id}">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-04-22T11:54:51.124167" level="INFO">GET Request : url=http://127.0.0.1:8000/ues/1 
+ path_url=/ues/1 
+ headers={'User-Agent': 'python-requests/2.33.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg time="2026-04-22T11:54:51.124267" level="INFO">GET Response : url=http://127.0.0.1:8000/ues/1 
+ status=200, reason=OK 
+ headers={'date': 'Wed, 22 Apr 2026 09:54:50 GMT', 'server': 'uvicorn', 'content-length': '172', 'content-type': 'application/json'} 
+ body={"ue_id":1,"bearers":{"9":{"bearer_id":9,"protocol":null,"target_bps":null,"active":false},"2":{"bearer_id":2,"protocol":null,"target_bps":null,"active":false}},"stats":{}} 
+ </msg>
+<msg time="2026-04-22T11:54:51.124437" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>ue_api</arg>
+<arg>/ues/${ue_id}</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.117721" elapsed="0.006757"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>200</arg>
+<arg>${response}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.124698" elapsed="0.000253"/>
+</kw>
+<kw name="Get From Dictionary" owner="Collections">
+<msg time="2026-04-22T11:54:51.125897" level="INFO">${bearers} = {'9': {'bearer_id': 9, 'protocol': None, 'target_bps': None, 'active': False}, '2': {'bearer_id': 2, 'protocol': None, 'target_bps': None, 'active': False}}</msg>
+<var>${bearers}</var>
+<arg>${response.json()}</arg>
+<arg>bearers</arg>
+<doc>Returns a value from the given ``dictionary`` based on the given ``key``.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.125118" elapsed="0.000821"/>
+</kw>
+<kw name="Dictionary Should Contain Key" owner="Collections">
+<arg>${bearers}</arg>
+<arg>${bearer_id}</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.126105" elapsed="0.000241"/>
+</kw>
+<doc>Checks if the bearer exists in the UE's configuration.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.117211" elapsed="0.009240"/>
+</kw>
+<status status="PASS" start="2026-04-22T11:54:50.897273" elapsed="0.229447"/>
+</test>
+<test id="s1-t5" name="TC-032: Fail when UE ID is not provided" line="31">
+<kw name="Reset API State" owner="shared_keywords" type="SETUP">
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-04-22T11:54:51.204270" level="INFO">POST Request : url=http://127.0.0.1:8000/reset 
+ path_url=/reset 
+ headers={'User-Agent': 'python-requests/2.33.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '0'} 
+ body=None 
+ </msg>
+<msg time="2026-04-22T11:54:51.204374" level="INFO">POST Response : url=http://127.0.0.1:8000/reset 
+ status=200, reason=OK 
+ headers={'date': 'Wed, 22 Apr 2026 09:54:50 GMT', 'server': 'uvicorn', 'content-length': '18', 'content-type': 'application/json'} 
+ body={"status":"reset"} 
+ </msg>
+<msg time="2026-04-22T11:54:51.204540" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>ue_api</arg>
+<arg>${RESET_ENDPOINT}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.128232" elapsed="0.076350"/>
+</kw>
+<doc>Reset backend state before each test</doc>
+<status status="PASS" start="2026-04-22T11:54:51.127918" elapsed="0.076801"/>
+</kw>
+<kw name="Adding bearer to UE ${EMPTY} with ID ${VALID_BEARER_ID} should fail" source_name="Adding bearer to UE ${ue_id} with ID ${bearer_id} should fail">
+<kw name="Prepare Json Headers" owner="shared_keywords">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-04-22T11:54:51.207884" level="INFO">&amp;{headers} = { Content-Type=application/json }</msg>
+<var>&amp;{headers}</var>
+<arg>Content-Type=application/json</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.207322" elapsed="0.000614"/>
+</kw>
+<return>
+<value>${headers}</value>
+<status status="PASS" start="2026-04-22T11:54:51.208039" elapsed="0.000054"/>
+</return>
+<msg time="2026-04-22T11:54:51.208293" level="INFO">${headers} = {'Content-Type': 'application/json'}</msg>
+<var>${headers}</var>
+<doc>Prepare Json request headers</doc>
+<status status="PASS" start="2026-04-22T11:54:51.206933" elapsed="0.001401"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-04-22T11:54:51.209216" level="INFO">&amp;{body} = { bearer_id=2 }</msg>
+<var>&amp;{body}</var>
+<arg>bearer_id=${bearer_id}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.208573" elapsed="0.000692"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-04-22T11:54:51.216859" level="INFO">POST Request : url=http://127.0.0.1:8000/ues/bearers 
+ path_url=/ues/bearers 
+ headers={'User-Agent': 'python-requests/2.33.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Type': 'application/json', 'Content-Length': '18'} 
+ body=b'{"bearer_id": "2"}' 
+ </msg>
+<msg time="2026-04-22T11:54:51.216965" level="INFO">POST Response : url=http://127.0.0.1:8000/ues/bearers 
+ status=405, reason=Method Not Allowed 
+ headers={'date': 'Wed, 22 Apr 2026 09:54:51 GMT', 'server': 'uvicorn', 'allow': 'GET', 'content-length': '31', 'content-type': 'application/json'} 
+ body={"detail":"Method Not Allowed"} 
+ </msg>
+<msg time="2026-04-22T11:54:51.217150" level="INFO">${response} = &lt;Response [405]&gt;</msg>
+<var>${response}</var>
+<arg>ue_api</arg>
+<arg>/ues/${ue_id}/bearers</arg>
+<arg>json=${body}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.209527" elapsed="0.007670"/>
+</kw>
+<kw name="Should Be True" owner="BuiltIn">
+<arg>${response.status_code} &gt;= 400</arg>
+<doc>Fails if the given condition is not true.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.217437" elapsed="0.001569"/>
+</kw>
+<doc>Attempts to add a bearer and expects the request to be rejected.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.205336" elapsed="0.013805"/>
+</kw>
+<doc>Attempting to add a bearer without specifying a UE ID in the path</doc>
+<status status="PASS" start="2026-04-22T11:54:51.127292" elapsed="0.092178"/>
+</test>
+<test id="s1-t6" name="TC-033: Fail when bearer ID is not provided" line="35">
+<kw name="Reset API State" owner="shared_keywords" type="SETUP">
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-04-22T11:54:51.235071" level="INFO">POST Request : url=http://127.0.0.1:8000/reset 
+ path_url=/reset 
+ headers={'User-Agent': 'python-requests/2.33.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '0'} 
+ body=None 
+ </msg>
+<msg time="2026-04-22T11:54:51.235212" level="INFO">POST Response : url=http://127.0.0.1:8000/reset 
+ status=200, reason=OK 
+ headers={'date': 'Wed, 22 Apr 2026 09:54:51 GMT', 'server': 'uvicorn', 'content-length': '18', 'content-type': 'application/json'} 
+ body={"status":"reset"} 
+ </msg>
+<msg time="2026-04-22T11:54:51.235476" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>ue_api</arg>
+<arg>${RESET_ENDPOINT}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.221220" elapsed="0.014304"/>
+</kw>
+<doc>Reset backend state before each test</doc>
+<status status="PASS" start="2026-04-22T11:54:51.220837" elapsed="0.014818"/>
+</kw>
+<kw name="Attach UE with ID ${VALID_UE_ID}" source_name="Attach UE with ID ${ue_id}">
+<kw name="Prepare Json Headers" owner="shared_keywords">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-04-22T11:54:51.238278" level="INFO">&amp;{headers} = { Content-Type=application/json }</msg>
+<var>&amp;{headers}</var>
+<arg>Content-Type=application/json</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.237384" elapsed="0.000947"/>
+</kw>
+<return>
+<value>${headers}</value>
+<status status="PASS" start="2026-04-22T11:54:51.238423" elapsed="0.000052"/>
+</return>
+<msg time="2026-04-22T11:54:51.238676" level="INFO">${headers} = {'Content-Type': 'application/json'}</msg>
+<var>${headers}</var>
+<doc>Prepare Json request headers</doc>
+<status status="PASS" start="2026-04-22T11:54:51.236826" elapsed="0.001891"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-04-22T11:54:51.240919" level="INFO">&amp;{body} = { ue_id=1 }</msg>
+<var>&amp;{body}</var>
+<arg>ue_id=${ue_id}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.238915" elapsed="0.002063"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-04-22T11:54:51.314132" level="INFO">POST Request : url=http://127.0.0.1:8000/ues 
+ path_url=/ues 
+ headers={'User-Agent': 'python-requests/2.33.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Type': 'application/json', 'Content-Length': '14'} 
+ body=b'{"ue_id": "1"}' 
+ </msg>
+<msg time="2026-04-22T11:54:51.314244" level="INFO">POST Response : url=http://127.0.0.1:8000/ues 
+ status=200, reason=OK 
+ headers={'date': 'Wed, 22 Apr 2026 09:54:51 GMT', 'server': 'uvicorn', 'content-length': '31', 'content-type': 'application/json'} 
+ body={"status":"attached","ue_id":1} 
+ </msg>
+<msg time="2026-04-22T11:54:51.314407" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>ue_api</arg>
+<arg>/ues</arg>
+<arg>json=${body}</arg>
+<arg>headers=${headers}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.241223" elapsed="0.073225"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>200</arg>
+<arg>${response}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.314703" elapsed="0.000264"/>
+</kw>
+<doc>Attaches a User Equipment (UE) to the EPC simulator.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.236267" elapsed="0.078823"/>
+</kw>
+<kw name="Attempt to add bearer to UE ${VALID_UE_ID} without providing any ID should fail" source_name="Attempt to add bearer to UE ${ue_id} without providing any ID should fail">
+<kw name="Prepare Json Headers" owner="shared_keywords">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-04-22T11:54:51.318023" level="INFO">&amp;{headers} = { Content-Type=application/json }</msg>
+<var>&amp;{headers}</var>
+<arg>Content-Type=application/json</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.317498" elapsed="0.000578"/>
+</kw>
+<return>
+<value>${headers}</value>
+<status status="PASS" start="2026-04-22T11:54:51.318173" elapsed="0.000053"/>
+</return>
+<msg time="2026-04-22T11:54:51.318443" level="INFO">${headers} = {'Content-Type': 'application/json'}</msg>
+<var>${headers}</var>
+<doc>Prepare Json request headers</doc>
+<status status="PASS" start="2026-04-22T11:54:51.317116" elapsed="0.001367"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-04-22T11:54:51.319119" level="INFO">&amp;{body} = { }</msg>
+<var>&amp;{body}</var>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.318683" elapsed="0.000519"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-04-22T11:54:51.337375" level="INFO">POST Request : url=http://127.0.0.1:8000/ues/1/bearers 
+ path_url=/ues/1/bearers 
+ headers={'User-Agent': 'python-requests/2.33.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Type': 'application/json', 'Content-Length': '2'} 
+ body=b'{}' 
+ </msg>
+<msg time="2026-04-22T11:54:51.337482" level="INFO">POST Response : url=http://127.0.0.1:8000/ues/1/bearers 
+ status=422, reason=Unprocessable Entity 
+ headers={'date': 'Wed, 22 Apr 2026 09:54:51 GMT', 'server': 'uvicorn', 'content-length': '92', 'content-type': 'application/json'} 
+ body={"detail":[{"type":"missing","loc":["body","bearer_id"],"msg":"Field required","input":{}}]} 
+ </msg>
+<msg time="2026-04-22T11:54:51.337699" level="INFO">${response} = &lt;Response [422]&gt;</msg>
+<var>${response}</var>
+<arg>ue_api</arg>
+<arg>/ues/${ue_id}/bearers</arg>
+<arg>json=${body}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.319558" elapsed="0.018185"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>422</arg>
+<arg>${response}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.337982" elapsed="0.000379"/>
+</kw>
+<doc>Sends a request to add a bearer but omits the bearer_id from the request body.</doc>
+<status status="PASS" start="2026-04-22T11:54:51.315614" elapsed="0.022860"/>
+</kw>
+<status status="PASS" start="2026-04-22T11:54:51.220238" elapsed="0.118553"/>
+</test>
+<doc>Functionality 6: Add Bearer</doc>
+<status status="PASS" start="2026-04-22T11:54:49.952034" elapsed="1.393542"/>
+</suite>
+<statistics>
+<total>
+<stat pass="6" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Functionality 6" id="s1" pass="6" fail="0" skip="0">Functionality 6</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
