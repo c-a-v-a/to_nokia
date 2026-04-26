@@ -7,27 +7,27 @@ Test Setup        Reset EPC Simulator
 
 *** Variables ***
 ${BASE_URL}           http://localhost:8000
-${MIN_VALID_UE_ID}    ${1}         
+${MIN_VALID_UE_ID}    ${0}         
 ${MAX_VALID_UE_ID}    ${100}       
-${MIN_INVALID_UE_ID}  ${0}         
+${MIN_INVALID_UE_ID}  ${-1}         
 ${MAX_INVALID_UE_ID}  ${101}       
 ${STRING_UE_ID}       invalid_id
 
 *** Test Cases ***
 TC-2-001: Succeed to detach UE with minimum valid ID
-    [Documentation]    Verify successful detachment for the lowest allowed UE ID (1).
+    [Documentation]    Verify successful detachment for the lowest allowed UE ID 0.
     Attach UE To Network    ${MIN_VALID_UE_ID}
     Detach UE From Network    ${MIN_VALID_UE_ID}
     Verify If UE Is Not Attached    ${MIN_VALID_UE_ID}
 
 TC-2-002: Succeed to detach UE with maximum valid ID
-    [Documentation]    Verify successful detachment for the highest allowed UE ID (100).
+    [Documentation]    Verify successful detachment for the highest allowed UE ID 100.
     Attach UE To Network    ${MAX_VALID_UE_ID}
     Detach UE From Network    ${MAX_VALID_UE_ID}
     Verify If UE Is Not Attached    ${MAX_VALID_UE_ID}
 
 TC-2-003: Fail when detaching UE with ID just below minimum
-    [Documentation]    Verify validation error when UE ID is 0 during detach.
+    [Documentation]    Verify validation error when UE ID is -1 during detach.
     Attempt To Detach UE With Out Of Range ID   ${MIN_INVALID_UE_ID}
 
 TC-2-004: Fail when detaching UE with ID just above maximum
